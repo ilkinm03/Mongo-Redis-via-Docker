@@ -14,5 +14,12 @@ services:
       - ./.env
     volumes:
       - db_data:/data/db
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
 volumes:
   db_data:
+  redis_data:
