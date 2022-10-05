@@ -22,23 +22,34 @@ interface BookModel extends mongoose.Model<BookDoc> {
   build(attrs: BookAttrs): BookDoc;
 }
 
-const bookSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+const bookSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: String,
+      required: true,
+    },
+    genre: {
+      type: String,
+      required: true,
+    },
+    language: String,
+    publishYear: String,
+    pages: Number,
   },
-  author: {
-    type: String,
-    required: true,
-  },
-  genre: {
-    type: String,
-    required: true,
-  },
-  language: String,
-  publishYear: String,
-  pages: Number,
-});
+  {
+    toJSON: {
+      transform(_doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+      },
+      versionKey: false,
+    },
+  }
+);
 
 bookSchema.statics.build = (attrs: BookAttrs) => new Book(attrs);
 
