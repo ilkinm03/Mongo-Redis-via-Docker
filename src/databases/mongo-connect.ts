@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import logger from "../logger/logger";
 
 export const connectMongo = async () => {
   const connection = mongoose.connect(process.env.MONGO_URI!);
@@ -7,11 +8,11 @@ export const connectMongo = async () => {
 
 mongoose.connection
   .on("connected", () => {
-    console.log("Connected to the DB!");
+    logger.info("Connected to the DB!");
   })
   .on("diconnected", () => {
-    console.log("Disconnected from the DB!");
+    logger.info("Disconnected from the DB!");
   })
   .on("error", (err) => {
-    console.log(`Error connecting to the DB: ${err}`);
+    logger.error(`Error connecting to the DB: ${err}`);
   });

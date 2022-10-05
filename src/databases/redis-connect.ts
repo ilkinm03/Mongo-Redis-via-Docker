@@ -1,4 +1,5 @@
 import Redis from "ioredis";
+import logger from "../logger/logger";
 
 export const connectRedis = async () => {
   try {
@@ -6,7 +7,7 @@ export const connectRedis = async () => {
       host: process.env.REDIS_HOST,
     });
     const PONG = await redis.ping();
-    console.log(`Redis is connected! [${PONG}]`);
+    logger.info(`Redis is connected! [${PONG}]`);
   } catch (error) {
     throw error;
   }
