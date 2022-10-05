@@ -44,4 +44,4 @@ bookSchema.statics.build = (attrs: BookAttrs) => new Book(attrs);
 
 const Book = mongoose.model<BookDoc, BookModel>("Book", bookSchema);
 
-export { Book };
+export { Book, BookAttrs, BookDoc };
