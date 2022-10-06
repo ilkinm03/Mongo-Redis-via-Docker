@@ -9,6 +9,13 @@ class BookService {
     logger.debug("BookController.createBook.BookService -- success");
     return book;
   }
+
+  async getBooks(): Promise<BookDoc[]> {
+    logger.debug("BookController.getBooks.BookService -- start");
+    const books = await Book.findBooks();
+    logger.debug("BookController.getBooks.BookService -- success");
+    return books;
+  }
 }
 
 export default new BookService();

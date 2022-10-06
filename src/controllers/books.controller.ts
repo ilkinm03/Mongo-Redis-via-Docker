@@ -15,6 +15,17 @@ class BookController {
       next(error);
     }
   }
+
+  async getBooks(_req: Request, res: Response, next: NextFunction) {
+    try {
+      logger.debug("BookController.getBooks -- start");
+      const books = await BookService.getBooks();
+      logger.debug("BookController.getBooks -- success");
+      res.status(200).send({ books });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new BookController();

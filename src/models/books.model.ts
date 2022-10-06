@@ -20,6 +20,7 @@ interface BookDoc extends mongoose.Document {
 
 interface BookModel extends mongoose.Model<BookDoc> {
   build(attrs: BookAttrs): BookDoc;
+  findBooks(): Promise<BookDoc[]>;
 }
 
 const bookSchema = new mongoose.Schema(
@@ -52,6 +53,7 @@ const bookSchema = new mongoose.Schema(
 );
 
 bookSchema.statics.build = (attrs: BookAttrs) => new Book(attrs);
+bookSchema.statics.findBooks = async () => await Book.find();
 
 const Book = mongoose.model<BookDoc, BookModel>("Book", bookSchema);
 
