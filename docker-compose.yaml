@@ -4,22 +4,24 @@ services:
     build: .
     ports:
       - "3000:3000"
-    env_file:
-      - ./.env
+    environment:
+      - PORT=3000
+    depends_on:
+      - mongo
+      - redis
   mongo:
     image: mongo
     ports:
       - "27017:27017"
-    env_file:
-      - ./.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=ilkin
+      - MONGO_INITDB_ROOT_PASSWORD=ilkin123123
     volumes:
       - db_data:/data/db
   redis:
     image: redis
     ports:
       - "6379:6379"
-    env_file:
-      - ./.env
     volumes:
       - redis_data:/data
 volumes:

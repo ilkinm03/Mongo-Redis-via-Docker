@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
 import logger from "../logger/logger";
+import envConfig from "../config/env-config";
 
 export const connectMongo = async () => {
-  const connection = mongoose.connect(process.env.MONGO_URI!);
+  const connection = mongoose.connect(
+    `mongodb://${envConfig.MONGO_USERNAME}:${envConfig.MONGO_PASSWORD}@${envConfig.MONGO_HOST}/?authSource=admin`
+  );
   return connection;
 };
 
