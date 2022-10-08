@@ -1,13 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "../logger/logger";
-import { BookAttrs } from "../models/books.model";
 import BookService from "../services/book.service";
 
 class BookController {
   async createBook(req: Request, res: Response, next: NextFunction) {
     try {
       logger.debug("BookController.createBook -- start");
-      const bookData: BookAttrs = req.body;
+      const bookData = req.body;
       const book = await BookService.createBook(bookData);
       res.status(201).send({ book });
       logger.debug("BookController.createBook -- success");
@@ -34,6 +33,19 @@ class BookController {
       const book = await BookService.getBook(id);
       logger.debug("BookController.getBook -- success");
       res.status(200).send({ book });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateBook(req: Request, res: Response, next: NextFunction) {
+    try {
+      logger.debug("BookController.updateBook -- start");
+      const { id } = req.params;
+      const newBookData = req.body;
+      await BookService.updateBook(id, newBookData);
+      logger.debug("BookController.updateBook -- success");
+      res.status(200).send({ message: "Book updated successfully!" });
     } catch (error) {
       next(error);
     }

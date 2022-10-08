@@ -25,11 +25,11 @@ class BookService {
     return books;
   }
 
-  async getBook(id: string): Promise<[BookDoc]> {
+  async getBook(id: string): Promise<BookDoc | null> {
     logger.debug("BookController.getBook.BookService -- start");
     const cache = await redis.get(id);
-    let book: [BookDoc];
-    if(!cache) {
+    let book: BookDoc | null;
+    if (!cache) {
       book = await Book.findBookById(id);
       await redis.set(id, JSON.stringify(book));
     } else {
@@ -37,6 +37,15 @@ class BookService {
     }
     logger.debug("BookController.getBook.BookService -- success");
     return book;
+  }
+
+  async updateBook(id: string, newBookData: BookAttrs) {
+    logger.debug("BookController.updateBook.BookService -- start");
+    await Book.findBookByIdAndUpdate(id, newBookData);
+    const newBook = await Book.findBookById(id);
+    await redis.set(id, JSON.stringify(newBook));
+    await redis.del("books");
+    logger.debug("BookController.updateBook.BookService -- success");
   }
 }
 

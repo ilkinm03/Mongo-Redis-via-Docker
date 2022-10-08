@@ -21,7 +21,8 @@ interface BookDoc extends mongoose.Document {
 interface BookModel extends mongoose.Model<BookDoc> {
   build(attrs: BookAttrs): BookDoc;
   findBooks(): Promise<BookDoc[]>;
-  findBookById(id: string): Promise<[BookDoc]>
+  findBookById(id: string): Promise<BookDoc | null>;
+  findBookByIdAndUpdate(id: string, query: BookAttrs): Promise<void>;
 }
 
 const bookSchema = new mongoose.Schema(
@@ -55,7 +56,13 @@ const bookSchema = new mongoose.Schema(
 
 bookSchema.statics.build = (attrs: BookAttrs) => new Book(attrs);
 bookSchema.statics.findBooks = async () => await Book.find();
-bookSchema.statics.findBookById = async (id: string) => await Book.findById(id)
+bookSchema.statics.findBookById = async (id: string) => await Book.findById(id);
+bookSchema.statics.findBookByIdAndUpdate = async (
+  id: string,
+  query: BookAttrs
+) => {
+  await Book.findByIdAndUpdate(id, query);
+};
 
 const Book = mongoose.model<BookDoc, BookModel>("Book", bookSchema);
 
