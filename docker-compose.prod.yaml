@@ -7,4 +7,6 @@ services:
         - NODE_ENV=production
     environment:
       - NODE_ENV=production
+      - MONGO_USERNAME=ilkin
+      - MONGO_PASSWORD=ilkin123123
     
