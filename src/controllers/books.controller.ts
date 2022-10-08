@@ -26,6 +26,18 @@ class BookController {
       next(error);
     }
   }
+
+  async getBook(req: Request, res: Response, next: NextFunction) {
+    try {
+      logger.debug("BookController.getBook -- start");
+      const { id } = req.params;
+      const book = await BookService.getBook(id);
+      logger.debug("BookController.getBook -- success");
+      res.status(200).send({ book });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new BookController();
