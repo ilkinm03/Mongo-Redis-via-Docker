@@ -1,3 +1,4 @@
+import { redis } from "../databases/redis-connect";
 import logger from "../logger/logger";
 import { Book, BookAttrs, BookDoc } from "../models/books.model";
 
@@ -12,7 +13,14 @@ class BookService {
 
   async getBooks(): Promise<BookDoc[]> {
     logger.debug("BookController.getBooks.BookService -- start");
-    const books = await Book.findBooks();
+    const cache = await redis.get("books");
+    let books: BookDoc[];
+    if (!cache) {
+      books = await Book.findBooks();
+      await redis.set("books", JSON.stringify(books));
+    } else {
+      books = JSON.parse(cache);
+    }
     logger.debug("BookController.getBooks.BookService -- success");
     return books;
   }
