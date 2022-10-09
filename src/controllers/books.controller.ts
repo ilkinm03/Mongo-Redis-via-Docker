@@ -50,6 +50,18 @@ class BookController {
       next(error);
     }
   }
+
+  async deleteBook(req: Request, res: Response, next: NextFunction) {
+    try {
+      logger.debug("BookController.deleteBook -- start");
+      const { id } = req.params;
+      await BookService.deleteBook(id);
+      logger.debug("BookController.deleteBook -- success");
+      res.status(200).send({ message: "Book deleted successfully!" });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new BookController();

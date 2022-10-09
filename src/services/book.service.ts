@@ -47,6 +47,14 @@ class BookService {
     await redis.del("books");
     logger.debug("BookController.updateBook.BookService -- success");
   }
+
+  async deleteBook(id: string) {
+    logger.debug("BookController.deleteBook.BookService -- start");
+    await Book.deleteBook(id);
+    const cache = await redis.get(id);
+    cache && (await redis.del(id));
+    logger.debug("BookController.deleteBook.BookService -- success");
+  }
 }
 
 export default new BookService();

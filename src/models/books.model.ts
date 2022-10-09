@@ -23,6 +23,7 @@ interface BookModel extends mongoose.Model<BookDoc> {
   findBooks(): Promise<BookDoc[]>;
   findBookById(id: string): Promise<BookDoc | null>;
   findBookByIdAndUpdate(id: string, query: BookAttrs): Promise<void>;
+  deleteBook(id: string): Promise<void>;
 }
 
 const bookSchema = new mongoose.Schema(
@@ -62,6 +63,9 @@ bookSchema.statics.findBookByIdAndUpdate = async (
   query: BookAttrs
 ) => {
   await Book.findByIdAndUpdate(id, query);
+};
+bookSchema.statics.deleteBook = async (id: string) => {
+  await Book.findByIdAndDelete(id);
 };
 
 const Book = mongoose.model<BookDoc, BookModel>("Book", bookSchema);
